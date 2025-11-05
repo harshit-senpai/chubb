@@ -1,0 +1,50 @@
+.math-icon {
+  position: absolute;
+  font-size: 3rem;
+  animation: float 6s ease-in-out infinite;
+  opacity: 0.45;
+  color: #000;
+}
+
+.math-icon:nth-child(1) {
+  top: 10%;
+  left: 5%;
+  animation-duration: 7s;
+}
+
+.math-icon:nth-child(2) {
+  top: 40%;
+  right: 10%;
+  animation-duration: 5s;
+}
+
+.math-icon:nth-child(3) {
+  bottom: 20%;
+  left: 15%;
+  animation-duration: 6s;
+}
+
+.math-icon:nth-child(4) {
+  bottom: 25%;
+  right: 20%;
+  animation-duration: 7s;
+}
+
+.option-correct {
+    background: rgba(0, 255, 0, 0.12);
+    border-color: rgba(0, 255, 0, 0.35);
+  }
+  .option-wrong {
+    background: rgba(255, 0, 0, 0.12);
+    border-color: rgba(255, 0, 0, 0.35);
+  }
+  .option-hover:hover {
+    background: rgba(150, 150, 255, 0.15);
+    border-color: rgba(150, 150, 255, 0.3);
+  }
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+  100% { transform: translateY(0px); }
+}
