@@ -121,7 +121,7 @@ const Dashboard = () => {
                 Hi, {profile?.username || "USER"}! 👋
               </h1>
               <p className="text-muted-foreground text-lg mt-1">
-                Welcome to Chubb's Digit and Delights
+                Welcome to Chubb's Digit and Delight
               </p>
             </div>
           </div>
