@@ -8,40 +8,24 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import chubbLogo from "./../../src/assets/chubb.png"
-import carousel1 from "@/assets/carousel1.jpeg"
-import carousel3 from "@/assets/carousel3.jpg"
-import carousel2 from "@/assets/carousel2.jpeg"
+import countries from "@/assets/54 countries.png";
+import sevenChubb from "@/assets/7Chubb.png";
+import personal from "@/assets/Personal.jpg";
+import commercial from "@/assets/1-Commercial.png";
+import insurance from "@/assets/1-insurance.png";
+import over200 from "@/assets/Over200.png";
+import assets200B from "@/assets/200B.png";
 
 const chubbCarouselData = [
-  {
-    img: "/images/chubb-global.jpg",
-    text: "54 countries and territories where we operate",
-  },
-  {
-    img: "/images/chubb-engineering.jpg",
-    text: "#7 Chubb Engineering Centres supporting our businesses and global functions",
-  },
-  {
-    img: "/images/chubb-family.jpg",
-    text: "#1 Personal lines insurer for high-net-worth families in the U.S.",
-  },
-  {
-    img: "/images/chubb-commercial.jpg",
-    text: "#1 Commercial lines insurer in the U.S.",
-  },
-  {
-    img: "/images/chubb-homeowners.jpg",
-    text: "#1 Insurance provider for Homeowners policy and claims experience satisfaction",
-  },
-  {
-    img: "/images/chubb-products.jpg",
-    text: "200+ insurance products and client services",
-  },
-  {
-    img: "/images/chubb-assets.jpg",
-    text: "$200B+ in global assets backing our financial strength",
-  },
+  { img: countries, text: "54 countries and territories where we operate" },
+  { img: sevenChubb, text: "#7 Chubb Engineering Centres supporting our businesses and global functions" },
+  { img: personal, text: "#1 Personal lines insurer for high-net-worth families in the U.S." },
+  { img: commercial, text: "#1 Commercial lines insurer in the U.S." },
+  { img: insurance, text: "#1 Insurance provider for Homeowners policy and claims experience satisfaction" },
+  { img: over200, text: "200+ insurance products and client services" },
+  { img: assets200B, text: "$200B+ in global assets backing our financial strength" },
 ];
+
 
 
 const Auth = () => {
@@ -80,34 +64,38 @@ navigate("/dashboard");
   return (
     <div className="min-h-screen bg-[#00A3E0] flex items-center justify-center p-6 relative overflow-hidden">
   {/* ✅ Watermark Background */}
-  <div className="absolute  mt-4 inset-0 flex items-center justify-center">
+  {/* <div className="absolute  mt-4 inset-0 flex items-center justify-center">
     <img
       src={chubbLogo}
       alt="Chubb watermark"
       className="w-[70%] max-w-[600px] object-contain opacity-25 mix-blend-overlay"
     />
-  </div>
+  </div> */}
 
       <div className="relative z-10 grid md:grid-cols-2 gap-10 max-w-6xl w-full items-center">
         {/* ✅ LEFT SIDE — CAROUSEL SECTION */}
         <div className="flex flex-col justify-center px-6 py-5 text-black space-y-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-black drop-shadow-lg animate-fadeInUp">
+          <h2 className="text-2xl md:text-3xl font-bold text-black drop-shadow-lg animate-fadeInUp">
             Chubb: A Global Leader in Property and Casualty Insurance
           </h2>
 
-          <div className="w-full h-[400px] rounded-3xl overflow-hidden shadow-2xl relative group">
-           
+          <div className="w-full h-[420px] rounded-3xl overflow-hidden shadow-2xl relative group">
+           <img
+    src={chubbCarouselData[index].img}
+    alt="Chubb Carousel"
+    className="absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-in-out"
+  />
 
             {/* Overlay with text */}
-            <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-center px-4 transition-all duration-700">
-              <p className="text-xl font-semibold text-black drop-shadow-md animate-fadeInUp">
+            <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/70 to-transparent px-6 py-5 text-center">
+    <p className="text-lg font-semibold text-white drop-shadow-md animate-fadeInUp">
                 {chubbCarouselData[index].text}
               </p>
             </div>
           </div>
 
           {/* Dots Navigation */}
-          <div className="flex justify-center gap-2 mt-3">
+          {/* <div className="flex justify-center gap-2 mt-3">
             {chubbCarouselData.map((_, i) => (
               <button
                 key={i}
@@ -117,7 +105,7 @@ navigate("/dashboard");
                 }`}
               />
             ))}
-          </div>
+          </div> */}
         </div>
 
         {/* ✅ RIGHT SIDE — FORM */}

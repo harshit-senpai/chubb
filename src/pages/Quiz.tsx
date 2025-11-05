@@ -4,7 +4,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft, Check, X } from "lucide-react";
 import { toast } from "sonner";
 import confetti from "canvas-confetti";
@@ -77,45 +76,42 @@ const Quiz = () => {
   }, [quizId]);
 
   const fetchQuiz = async () => {
-    if (!quizId) return;
+  if (!quizId) return;
 
-    const { data: quizData, error: quizError } = await supabase
-      .from("quizzes")
-      .select("*")
-      .eq("id", quizId)
-      .single();
+  const { data: quizData, error: quizError } = await supabase
+    .from("quizzes")
+    .select("*")
+    .eq("id", quizId)
+    .single();
 
-    if (quizError || !quizData) {
-      toast.error("Quiz not found");
-      navigate("/dashboard");
-      return;
-    }
+  if (quizError || !quizData) {
+    toast.error("Quiz not found");
+    navigate("/dashboard");
+    return;
+  }
 
-    setQuiz(quizData);
+  setQuiz(quizData);
 
-    // Fetch all questions for this difficulty
-    const { data: allQuestions, error: questionsError } = await supabase
-      .from("questions")
-      .select("*")
-      .eq("difficulty", quizData.difficulty);
+  const { data: questionsData, error: questionsError } = await supabase
+    .from("questions")
+    .select("*")
+    .eq("quiz_id", quizId);
 
-    if (questionsError) {
-      toast.error("Failed to load questions");
-      return;
-    }
+  if (questionsError) {
+    toast.error("Failed to load questions");
+    return;
+  }
 
-    if (!allQuestions || allQuestions.length === 0) {
-      toast.error("No questions available for this difficulty");
-      navigate("/dashboard");
-      return;
-    }
+  if (questionsData && questionsData.length > 0) {
+    // Shuffle questions and take only 2
+    const shuffled = [...questionsData].sort(() => Math.random() - 0.5);
+    const selected = shuffled.slice(0, 2);
+    setQuestions(selected);
+  } else {
+    setQuestions([]);
+  }
+}; // ✅ <— This closing brace was missing!
 
-    // Randomly select 2 questions
-    const shuffled = [...allQuestions].sort(() => Math.random() - 0.5);
-    const selectedQuestions = shuffled.slice(0, 2);
-
-    setQuestions(selectedQuestions);
-  };
 
   const handleAnswer = (answer: string) => {
     if (selectedAnswer) return;
@@ -216,10 +212,10 @@ const Quiz = () => {
           <img
             src={chubbLogo}
             alt="Chubb Logo"
-            className="h-8 pl-6 w-auto object-contain drop-shadow-md cursor-pointer"
-            onClick={() => navigate("/dashboard")}
+            className="h-5 pl-6 w-auto object-contain drop-shadow-md cursor-pointer"
+            
           />
-
+         
         </div>
 
         <Card className="max-w-md w-full shadow-2xl border-2 border-primary/20 bg-white/80 backdrop-blur-xl rounded-2xl p-1">
@@ -269,22 +265,22 @@ const Quiz = () => {
               Your Score {score} out of {questions.length}
             </p>
 
-            <div className="bg-primary/10 border border-primary/30 p-4 rounded-lg shadow-inner">
+            <div className="bg-primary/10 border border-primary/30 p-2 rounded-lg shadow-inner">
               <p className="text-2xl font-semibold text-primary">
                 +{score * 10} Points ⭐
               </p>
             </div>
 
-            <div className="flex gap-4 pt-3">
-              <Button
+            <div >
+              {/* <Button
                 onClick={() => window.location.reload()}
                 className="flex-1 h-12 rounded-xl bg-primary text-white font-semibold shadow-md hover:bg-primary/90"
               >
                 Try Again
-              </Button>
+              </Button> */}
               <Button
                 variant="outline"
-                onClick={() => navigate("/dashboard")}
+                onClick={() => navigate("/")}
                 className="flex-1 h-12 rounded-xl border-primary text-primary font-semibold hover:bg-primary/10"
               >
                 Go Home
@@ -298,7 +294,7 @@ const Quiz = () => {
 
   if (!quiz || questions.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-primary-light via-background to-secondary p-6 relative">
+      <div className="min-h-screen flex items-center justify-center bg-background relative">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-20"
           style={{ backgroundImage: `url(${bg2})` }}
@@ -309,40 +305,13 @@ const Quiz = () => {
           <img
             src={chubbLogo}
             alt="Chubb Logo"
-            className="h-6 pl-6 w-auto object-contain drop-shadow-md cursor-pointer"
+            className="h-6 pl-6  w-auto object-contain drop-shadow-md cursor-pointer"
             onClick={() => navigate("/dashboard")}
           />
+    
         </div>
 
-        <div className="max-w-xl mx-auto mt-16 relative z-10">
-          <Card className="shadow-xl border border-primary/30 rounded-2xl bg-background/40 backdrop-blur-lg">
-            <CardContent className="p-6 space-y-4">
-              <Skeleton className="h-10 w-32" />
-
-              <div className="flex justify-between items-center">
-                <Skeleton className="h-8 w-48" />
-                <Skeleton className="h-8 w-20" />
-              </div>
-
-              <Skeleton className="h-2 w-full" />
-
-              <div className="pt-4">
-                <Skeleton className="h-6 w-full" />
-                <Skeleton className="h-6 w-3/4 mt-2" />
-              </div>
-
-              <div className="space-y-3 pt-2">
-                {[1, 2, 3, 4].map((i) => (
-                  <Skeleton key={i} className="h-16 w-full rounded-xl" />
-                ))}
-              </div>
-
-              <div className="flex justify-between items-center pt-4">
-                <Skeleton className="h-4 w-32" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        <div className="text-2xl font-semibold text-primary">Loading quiz...</div>
       </div>
     );
   }
@@ -365,7 +334,7 @@ const Quiz = () => {
           className="h-6 pl-6  w-auto object-contain drop-shadow-md cursor-pointer"
           onClick={() => navigate("/dashboard")}
         />
-
+      
       </div>
 
       {/* Floating Math Icons */}
@@ -385,8 +354,8 @@ const Quiz = () => {
       </div>
 
       <div className="max-w-xl mx-auto mt-16">
-        <Card className="relative shadow-xl border border-primary/30 rounded-2xl bg-background/40 backdrop-blur-lg overflow-hidden">
-          {/* ✅ Watermark logo
+       <Card className="relative shadow-xl border border-primary/30 rounded-2xl bg-background/40 backdrop-blur-lg overflow-hidden">
+  {/* ✅ Watermark logo
   <div className="absolute inset-0 flex justify-center items-center opacity-15 pointer-events-none select-none">
     <img
       src={chubbLogo}
@@ -394,7 +363,7 @@ const Quiz = () => {
       className="w-2/3 max-w-[300px] object-contain"
     />
   </div> */}
-          <CardContent className="relative z-10 p-6 space-y-4">
+    <CardContent className="relative z-10 p-6 space-y-4">
 
             <Button
               onClick={() => navigate("/dashboard")}
