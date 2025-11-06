@@ -184,7 +184,7 @@ const Dashboard = () => {
 
                     <div>
                       <p className="text-lg font-semibold">{quiz.title}</p>
-                      <p>{quiz.total_questions} questions</p>
+                      <p>{2} questions</p>
                     </div>
                   </div>
 

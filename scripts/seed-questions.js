@@ -27,9 +27,9 @@ const QUIZ_IDS = {
 
 // Configuration
 const QUESTIONS_CONFIG = [
-  { difficulty: 'easy', count: 200, grade: 6, quizId: QUIZ_IDS.easy },
-  { difficulty: 'medium', count: 200, grade: 8, quizId: QUIZ_IDS.medium },
-  { difficulty: 'hard', count: 150, grade: 10, quizId: QUIZ_IDS.hard }
+  { difficulty: 'easy', count: 120, grade: 6, quizId: QUIZ_IDS.easy },
+  { difficulty: 'medium', count: 120, grade: 8, quizId: QUIZ_IDS.medium },
+  { difficulty: 'hard', count: 120, grade: 10, quizId: QUIZ_IDS.hard }
 ];
 
 const BATCH_SIZE = 20;
@@ -37,7 +37,7 @@ const DELAY_BETWEEN_BATCHES = 2000;
 const DELAY_BETWEEN_API_CALLS = 1000; // 1 second delay for OpenAI
 
 // OpenAI model to use
-const MODEL = 'gpt-3.5-turbo'; // Fast and cost-effective
+const MODEL = 'gpt-5'; // Fast and cost-effective
 
 /**
  * Call OpenAI API
@@ -57,8 +57,6 @@ async function callOpenAI(prompt) {
         content: prompt
       }
     ],
-    temperature: 0.9,
-    max_tokens: 4000
   };
   
   const response = await fetch(url, {
