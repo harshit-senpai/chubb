@@ -145,43 +145,48 @@ const Quiz = () => {
   };
 
   const finishQuiz = async () => {
-    if (!quiz) return;
-    const points = score * 10;
+  if (!quiz) return;
+  const points = score * 10;
 
+  // 🎉 Only show confetti if score > 0
+  if (score > 0) {
     confetti({
       particleCount: 120,
       spread: 80,
       origin: { y: 0.6 },
     });
+  }
 
-    if (!userId) {
-      setShowResult(true);
-      return;
-    }
-
-    const { error: attemptError } = await supabase.from("quiz_attempts").insert({
-      user_id: userId,
-      quiz_id: quiz.id,
-      score: points,
-      total_questions: quiz.total_questions,
-      correct_answers: score,
-    });
-
-    if (attemptError) {
-      console.error("Attempt insert error:", attemptError);
-      toast.error("Failed to save quiz attempt");
-    }
-
+  if (!userId) {
     setShowResult(true);
+    return;
+  }
 
-    if (score === questions.length) {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 },
-      });
-    }
-  };
+  const { error: attemptError } = await supabase.from("quiz_attempts").insert({
+    user_id: userId,
+    quiz_id: quiz.id,
+    score: points,
+    total_questions: quiz.total_questions,
+    correct_answers: score,
+  });
+
+  if (attemptError) {
+    console.error("Attempt insert error:", attemptError);
+    toast.error("Failed to save quiz attempt");
+  }
+
+  setShowResult(true);
+
+  // 🎉 Confetti only for perfect score
+  if (score === questions.length && score > 0) {
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+    });
+  }
+};
+
 
   const getOptionClass = (option: string) => {
     const correct = option === questions[currentQuestion]?.correct_answer;
@@ -224,8 +229,18 @@ const Quiz = () => {
               {score === questions.length ? "🏆" : "🎯"}
             </div>
 
-            <h2 className="text-4xl font-extrabold text-primary">Congratulations</h2>
-            <span className="text-muted-foreground">You won your CHUBB Delight Box </span>
+            {score === 0 ? (
+  <>
+    <h2 className="text-4xl font-extrabold text-red-500">Oops!</h2>
+    <span className="text-muted-foreground">Better luck next time 😔</span>
+  </>
+) : (
+  <>
+    <h2 className="text-4xl font-extrabold text-primary">Congratulations</h2>
+    <span className="text-muted-foreground">You won your CHUBB Delight Box 🎁</span>
+  </>
+)}
+
 
             <div className="flex justify-center relative">
               <svg width="180" height="180" className="transform -rotate-90">
