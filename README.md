@@ -150,38 +150,3 @@ Frontend: build and deploy the `dist` folder produced by `npm run build`. Any st
 
 Backend/DB: use Supabase (managed). For production environment variables, set keys securely in your host/provider (do not expose anon keys in public repos). Use service-role keys only on trusted server-side code.
 
-**Recommended CI workflow (example)**
-
-1. On push to `main` run `npm ci` and `npm run build`.
-2. Run `npm run lint`.
-3. Deploy build output to your chosen host and set production Supabase env variables in host settings.
-
-**Contributing**
-
-- Fork the repo, create a branch, open a PR with a clear description and screenshots if applicable.
-- Keep changes focused: UI, features, bugfixes, or tests.
-
-**Troubleshooting**
-
-- Issue: `VITE_SUPABASE_ANON_KEY` missing
-  - Ensure `.env` exists and you restarted the dev server after adding it.
-- Issue: Seeding fails with OpenAI error
-  - Verify `OPENAI_API_KEY` and your OpenAI account/billing
-  - Check rate-limit responses and retry after backoff
-- Issue: Migration errors
-  - Open the SQL file under `supabase/migrations/` and run it manually in Supabase SQL editor
-
-**Next steps / Suggestions**
-
-- Add a `deploy` script and CI workflow (GitHub Actions) that runs build + deploy.
-- Add automated tests (Vitest) and pre-commit hooks (husky) for linting.
-
----
-
-If you want, I can also:
-
-- Add a `README` badge for build/lint status
-- Create a sample `.env.example` file
-- Generate a minimal GitHub Actions workflow for build & deploy
-
----
